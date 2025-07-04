@@ -1,0 +1,40 @@
+# Nombre del workflow
+name: CI/CD FrontEnd
+
+# Controla lo que se va a ejecutar (Trigger) pull, push, pull request
+on:
+    push:
+        branches: [release, develop]
+        paths:
+            - '**'
+    pull_request:
+        branches: [release, develop]
+        paths:
+            - '**'
+
+# Pasos a realizar
+jobs:
+    sistema-ventas-web:
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: sistema-ventas-web
+        steps:
+            - uses: actions/checkout@v4         # Clona el repositorio actual
+            - uses: actions/setup-node@v4       # Usa Node
+              with:
+                node-version: 22.16.0           # Versión de Node
+
+            # Cargar la cache de node_modules, para reducir el tiempo de instalación en próximas ejecuciones
+            - name: Cache node modules
+              id: node-cache
+              uses: actions/cache@v4
+              with:
+                path: node_modules
+                key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+            
+            # Instalar las dependencias
+            - name: Install dependences
+              # No ejecutar si se obtuvo el node_modules de cache
+              if: steps.node-cache.outputs.cache-hit != 'true'
+              run: npm install
