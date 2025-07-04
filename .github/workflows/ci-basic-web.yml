@@ -1,5 +1,5 @@
 # Nombre del workflow
-name: CI/CD FrontEnd
+name: CI/CD Frontend
 
 # Controla lo que se va a ejecutar (Trigger) pull, push, pull request
 on:
