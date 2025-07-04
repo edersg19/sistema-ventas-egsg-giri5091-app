@@ -4,13 +4,9 @@ name: CI/CD Frontend
 # Controla lo que se va a ejecutar (Trigger) pull, push, pull request
 on:
     push:
-        branches: [release, develop]
-        paths:
-            - '**'
+        branches: [release, develop, feature/auth]
     pull_request:
-        branches: [release, develop]
-        paths:
-            - '**'
+        branches: [release, develop, feature/auth]
 
 # Pasos a realizar
 jobs:
@@ -31,7 +27,7 @@ jobs:
               uses: actions/cache@v4
               with:
                 path: node_modules
-                key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
             
             # Instalar las dependencias
             - name: Install dependences
